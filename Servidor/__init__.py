@@ -1,5 +1,6 @@
 from flask import Flask, request
 import json
+import csv
 
 app = Flask(__name__)
 
@@ -18,7 +19,9 @@ def upload_file():
     
     # read the file and do something with it
     data = file.read()
-    # for example, you could parse the CSV data here using a library like pandas
+    reader = csv.reader(data, delimiter=',')
+    for row in reader:
+        print(row)
 
     # return success
     return json.dumps({'status': 'OK'}), 200
