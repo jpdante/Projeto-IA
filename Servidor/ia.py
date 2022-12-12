@@ -53,36 +53,11 @@ class IAProcessor:
     cm_display.plot()
     plt.show()
 
-  def do(self):
-    iris = datasets.load_iris()
-    df = pd.DataFrame(data=iris.data, columns=iris.feature_names)
-    df['target'] = iris.target
-    df.head()
+    Accuracy = metrics.accuracy_score([trainSetClass], [testPridictSetClass])
+    # O quanto acerta.
+    # (True Positive + True Negative) / Total Predictions
 
-    trainData = df.drop('target', axis=1)
-    trainClassification = df.target
-
-    testElement = [4.8, 2.7, 2.5, 0.7]
-
-    distances = []
-    for i in trainData.index:
-      trainElement = trainData.iloc[i]
-      distances.append(self.getEuclidianDistance(trainElement, testElement))
-    
-    df_dists = pd.DataFrame(data=distances, index=trainData.index, columns=['dist'])
-    df_dists.head()
-    
-    k = 5
-
-    df_nn = df_dists.sort_values(by=['dist'], axis=0)[:k]
-    counter = Counter(trainClassification[df_nn.index])
-    testClassification = counter.most_common()[0][0]
-
-    confusion_matrix = metrics.confusion_matrix([1], [testClassification])
-    cm_display = metrics.ConfusionMatrixDisplay(confusion_matrix=confusion_matrix)
-    cm_display.plot()
-    plt.show()
-    # print(self.getEuclidianDistance(p, q))
+    print({"Accuracy": Accuracy})
 
 ia = IAProcessor()
 #ia.do()
