@@ -14,9 +14,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
+    public void openResponse(View view) {
+        Intent membersIntent = new Intent(getApplicationContext(), ResponseActivity.class);
+        String json = "{}";
+        membersIntent.putExtra("response", json);
+        startActivity(membersIntent);
+    }
+
     public void openMembers(View view) {
         Intent membersIntent = new Intent(getApplicationContext(), MembersActivity.class);
-        //membersIntent.putExtra("key", value); // extra parameters
         startActivity(membersIntent);
     }
 }
