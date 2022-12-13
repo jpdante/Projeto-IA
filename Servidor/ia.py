@@ -60,9 +60,8 @@ class IAProcessor:
     print({"Accuracy": Accuracy})
 
 ia = IAProcessor()
-#ia.do()
 
-iris = datasets.load_iris()
+'''iris = datasets.load_iris()
 df = pd.DataFrame(data=iris.data, columns=iris.feature_names)
 df['class'] = iris.target
 df.head()
@@ -72,4 +71,16 @@ df_train, df_test = train_test_split(df, train_size=0.7)
 df_train = df_train.reset_index(drop=True)
 df_test = df_test.reset_index(drop=True)
 
-ia.knn(df_train.drop('class', axis=1), df_train.loc[:, 'class'], df_test.drop('class', axis=1), df_test.loc[:, 'class'], 15)
+ia.knn(df_train.drop('class', axis=1), df_train.loc[:, 'class'], df_test.drop('class', axis=1), df_test.loc[:, 'class'], 15)'''
+
+wine = pd.read_csv("wine-quality.csv")
+wine.head()
+
+df_train, df_test = train_test_split(wine, train_size=0.7)
+
+df_train = df_train.reset_index(drop=True)
+df_test = df_test.reset_index(drop=True)
+
+df_train.drop('quality', axis=1)
+
+ia.knn(df_train.drop('quality', axis=1), df_train.loc[:, 'quality'], df_test.drop('quality', axis=1), df_test.loc[:, 'quality'], 5)
