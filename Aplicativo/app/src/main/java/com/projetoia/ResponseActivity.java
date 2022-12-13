@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.projetoia.core.CustomAdapter;
+import com.projetoia.model.ResponseItem;
 import com.projetoia.model.ResponseModel;
 
 public class ResponseActivity extends AppCompatActivity {
@@ -39,6 +40,7 @@ public class ResponseActivity extends AppCompatActivity {
         imageView.setImageBitmap(decodedByte);
 
         ListView listView = findViewById(R.id.listView);
+        response.data.items.add(0, new ResponseItem("Índice", "Predição", "Classifação"));
         listView.setAdapter(new CustomAdapter(response.data.items,this));
     }
 
