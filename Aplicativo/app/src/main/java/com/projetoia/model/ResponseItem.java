@@ -1,4 +1,4 @@
-package com.projetoia;
+package com.projetoia.model;
 
 public class ResponseItem {
 

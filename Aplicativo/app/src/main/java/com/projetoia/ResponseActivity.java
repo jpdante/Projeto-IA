@@ -3,13 +3,18 @@ package com.projetoia;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
+import android.util.Base64;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
-
-import java.util.ArrayList;
+import com.projetoia.core.CustomAdapter;
+import com.projetoia.model.ResponseModel;
 
 public class ResponseActivity extends AppCompatActivity {
 
@@ -23,8 +28,21 @@ public class ResponseActivity extends AppCompatActivity {
 
         Gson gson = new Gson();
         ResponseModel response = gson.fromJson(extraData, ResponseModel.class);
+        if (!response.status) {
+            Toast.makeText(this, "Falha ao processar arquivo.", Toast.LENGTH_LONG);
+            finish();
+        }
 
-        ListView l = findViewById(R.id.listView);
-        l.setAdapter(new CustomAdapter(response.Items,this));
+        ImageView imageView = findViewById(R.id.imageView);
+        byte[] decodedString = Base64.decode(response.data.image, Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        imageView.setImageBitmap(decodedByte);
+
+        ListView listView = findViewById(R.id.listView);
+        listView.setAdapter(new CustomAdapter(response.data.items,this));
+    }
+
+    public void goBack(View view) {
+        finish();
     }
 }

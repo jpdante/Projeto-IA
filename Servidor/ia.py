@@ -1,14 +1,18 @@
+import base64
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from collections import Counter
-from sklearn import datasets, metrics
+from sklearn import metrics
 from sklearn.model_selection import train_test_split
+import io
 
 class IAProcessor:
 
   def __init__(self):
-    self.elements = list()
+    self.train_data = pd.read_csv("train_data.csv")
+    self.train_data.head()
+    self.k = 10
 
   def getEuclidianDistance(self, p, q):
     """
@@ -24,16 +28,36 @@ class IAProcessor:
     return np.linalg.norm(np.array(p) - np.array(q))
 
   def process(self, df):
-    df_train, df_test = train_test_split(df, train_size=0.7)
+    """
+    Realiza o processamento dos dados de teste
+    
+    Args:
+        df: DataFrame dos dados de test
+        
+    Returns:
+        Object: resposta com items e plot
+    """
+    trainData = self.train_data.drop('class', axis=1)
+    trainClass = self.train_data.loc[:, 'class']
+    testData = df.drop('class', axis=1)
+    testClass = df.loc[:, 'class']
 
-    df_train = df_train.reset_index(drop=True)
-    df_test = df_test.reset_index(drop=True)
-
-    df_train.drop('quality', axis=1)
-
-    self.knn(df_train.drop('quality', axis=1), df_train.loc[:, 'quality'], df_test.drop('quality', axis=1), df_test.loc[:, 'quality'], 5)
+    return self.knn(trainData, trainClass, testData, testClass, self.k)
 
   def knn(self, trainSet, trainSetClass, testSet, testSetClass, k):
+    """
+    Processamento knn
+    
+    Args:
+        trainData: DataFrame dos dados de treinamento
+        trainClass: DataFrame da classificação dos dados de treinamento
+        testData: DataFrame dos dados de teste
+        testClass: DataFrame da classificação dos dados de teste
+        k: Quantidade de elementos proximos
+        
+    Returns:
+        Object: resposta com items e plot
+    """
     testPridictSetClass = []
 
     for testIndex in testSet.index:
@@ -51,46 +75,17 @@ class IAProcessor:
       counter = Counter(trainSetClass[dfnn.index])
       testPridictSetClass.append(counter.most_common()[0][0])
 
-    gotRight = 0
-    for idx, x in enumerate(testPridictSetClass):
-      if x == testSetClass.iloc[idx]:
-        gotRight += 1
-
-    print(str(gotRight) + "/" + str(len(testPridictSetClass)))
-
     confusion_matrix = metrics.confusion_matrix(testSetClass.to_numpy(), testPridictSetClass)
     cm_display = metrics.ConfusionMatrixDisplay(confusion_matrix=confusion_matrix)
     cm_display.plot()
-    plt.show()
+    image = None
+    with io.BytesIO() as buffer:
+      plt.savefig(buffer, format='png')
+      buffer.seek(0)
+      image = buffer.getvalue()
 
-    Accuracy = metrics.accuracy_score([trainSetClass], [testPridictSetClass])
-    # O quanto acerta.
-    # (True Positive + True Negative) / Total Predictions
+    items = []
+    for testIndex in testSet.index:
+      items.append({ 'id': str(testIndex), 'predict': str(testPridictSetClass[testIndex]), 'trueResult': str(testSetClass[testIndex]) })
 
-    print({"Accuracy": Accuracy})
-
-ia = IAProcessor()
-
-'''iris = datasets.load_iris()
-df = pd.DataFrame(data=iris.data, columns=iris.feature_names)
-df['class'] = iris.target
-df.head()
-
-df_train, df_test = train_test_split(df, train_size=0.7)
-
-df_train = df_train.reset_index(drop=True)
-df_test = df_test.reset_index(drop=True)
-
-ia.knn(df_train.drop('class', axis=1), df_train.loc[:, 'class'], df_test.drop('class', axis=1), df_test.loc[:, 'class'], 15)'''
-
-wine = pd.read_csv("wine-quality.csv")
-wine.head()
-
-df_train, df_test = train_test_split(wine, train_size=0.7)
-
-df_train = df_train.reset_index(drop=True)
-df_test = df_test.reset_index(drop=True)
-
-df_train.drop('quality', axis=1)
-
-ia.knn(df_train.drop('quality', axis=1), df_train.loc[:, 'quality'], df_test.drop('quality', axis=1), df_test.loc[:, 'quality'], 5)
+    return {'items': items, 'image': base64.b64encode(image).decode() }

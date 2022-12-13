@@ -1,4 +1,4 @@
-package com.projetoia;
+package com.projetoia.core;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -6,6 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import com.projetoia.R;
+import com.projetoia.model.ResponseItem;
 
 import java.util.ArrayList;
 
@@ -25,7 +28,6 @@ public class CustomAdapter extends ArrayAdapter<ResponseItem> {
         super(context, R.layout.row_item, data);
         this.dataSet = data;
         this.mContext = context;
-
     }
 
     private int lastPosition = -1;

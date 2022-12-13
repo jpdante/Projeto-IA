@@ -5,6 +5,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -13,11 +14,13 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -55,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void sendFile(View view) {
         if (currentPath == null) return;
+        Activity activity = this;
         new Thread(new Runnable(){
             @Override
             public void run() {
@@ -67,11 +71,15 @@ public class MainActivity extends AppCompatActivity {
                     in.close();
                 } catch (IOException e) {
                     e.printStackTrace();
+                    activity.runOnUiThread(() -> Toast.makeText(activity, "Falha ao abrir arquivo.", Toast.LENGTH_LONG).show());
+                    return;
                 }
 
-                OkHttpClient client = new OkHttpClient();
-
-                System.out.println(currentPath.toString());
+                OkHttpClient client = new OkHttpClient.Builder()
+                        .connectTimeout(5, TimeUnit.SECONDS)
+                        .writeTimeout(120, TimeUnit.SECONDS)
+                        .readTimeout(120, TimeUnit.SECONDS)
+                        .build();
 
                 RequestBody requestBody = new MultipartBody.Builder()
                         .setType(MultipartBody.FORM)
@@ -91,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
                     membersIntent.putExtra("response", response.body().string());
                     startActivity(membersIntent);
                 } catch (IOException e) {
+                    activity.runOnUiThread(() -> Toast.makeText(activity, "Falha ao fazer requisição.", Toast.LENGTH_LONG).show());
                     e.printStackTrace();
                 }
             }
