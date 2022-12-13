@@ -45,7 +45,7 @@
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/filePathText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -58,13 +58,15 @@
             android:layout_width="match_parent"
             android:layout_height="49dp"
             android:layout_marginTop="10dp"
-            android:onClick="openResponse"
+            android:onClick="selectFile"
             android:text="Escolher Arquivo" />
 
         <Button
             android:id="@+id/uploadFileBtn"
             android:layout_width="match_parent"
             android:layout_height="49dp"
+            android:enabled="false"
+            android:onClick="sendFile"
             android:text="Enviar" />
 
         <Button

@@ -23,6 +23,16 @@ class IAProcessor:
     """
     return np.linalg.norm(np.array(p) - np.array(q))
 
+  def process(self, df):
+    df_train, df_test = train_test_split(df, train_size=0.7)
+
+    df_train = df_train.reset_index(drop=True)
+    df_test = df_test.reset_index(drop=True)
+
+    df_train.drop('quality', axis=1)
+
+    self.knn(df_train.drop('quality', axis=1), df_train.loc[:, 'quality'], df_test.drop('quality', axis=1), df_test.loc[:, 'quality'], 5)
+
   def knn(self, trainSet, trainSetClass, testSet, testSetClass, k):
     testPridictSetClass = []
 

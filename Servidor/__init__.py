@@ -1,6 +1,8 @@
 from flask import Flask, request
 import json
-import csv
+import pandas as pd
+from io import StringIO
+import ia
 
 app = Flask(__name__)
 
@@ -19,9 +21,9 @@ def upload_file():
     
     # read the file and do something with it
     data = file.read()
-    reader = csv.reader(data, delimiter=',')
-    for row in reader:
-        print(row)
+    df = pd.read_csv(StringIO(str(data,'utf-8')))
+    processor = ia.IAProcessor()
+    processor.process(df)
 
     # return success
     return json.dumps({'status': 'OK'}), 200
