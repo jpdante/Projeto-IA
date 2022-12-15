@@ -116,4 +116,9 @@ public class MainActivity extends AppCompatActivity {
         Intent membersIntent = new Intent(getApplicationContext(), MembersActivity.class);
         startActivity(membersIntent);
     }
+
+    public void openAbout(View view) {
+        Intent membersIntent = new Intent(getApplicationContext(), AboutActivity.class);
+        startActivity(membersIntent);
+    }
 }
