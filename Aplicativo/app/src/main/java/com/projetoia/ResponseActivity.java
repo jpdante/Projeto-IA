@@ -10,10 +10,12 @@ import android.util.Base64;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.projetoia.core.CustomAdapter;
+import com.projetoia.model.ResponseData;
 import com.projetoia.model.ResponseItem;
 import com.projetoia.model.ResponseModel;
 
@@ -42,6 +44,9 @@ public class ResponseActivity extends AppCompatActivity {
         ListView listView = findViewById(R.id.listView);
         response.data.items.add(0, new ResponseItem("Índice", "Predição", "Classifação"));
         listView.setAdapter(new CustomAdapter(response.data.items,this));
+
+        TextView accuracy = findViewById(R.id.accuracyTextView);
+        accuracy.setText("Taxa de acerto: " + response.data.accuracy);
     }
 
     public void goBack(View view) {

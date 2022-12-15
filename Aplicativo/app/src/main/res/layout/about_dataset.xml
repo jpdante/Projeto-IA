@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#2C3032"
+    tools:context=".MembersActivity">
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="400dp"
+        android:layout_height="313dp"
+        android:text='O "Breast Cancer Wisconsin (Diagnostic) Data Set" é um Data Set para treinar algoritmos de inteligência artificial (com o foco em algoritmos de classificação) a diferenciarem câncer de mama benigno de maligno. Para isso, ele utiliza informações sobre o raio, textura, perímetro, área, suavidade, compactidade, concavidade, pontos côncavos, simetria e dimensão fractal do tumor. Todos os atributos variam de 0-10, ou seja, possuem o mesmo peso para classificação.'
+        android:textColor="#FAF9F9"
+        android:textSize="20sp"
+        tools:layout_editor_absoluteX="5dp"
+        tools:layout_editor_absoluteY="333dp" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="310dp"
+        android:layout_height="221dp"
+        android:scaleType="fitStart"
+        app:srcCompat="@drawable/breastCancer"
+        tools:layout_editor_absoluteX="59dp"
+        tools:layout_editor_absoluteY="97dp" />
+
+    <TextView
+        android:id="@+id/titleText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
+        android:foregroundTint="#6A4B4B"
+        android:text="Câncer de Mama"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="34sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/goBackBtn"
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="15dp"
+        android:onClick="goBack"
+        android:text="Voltar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

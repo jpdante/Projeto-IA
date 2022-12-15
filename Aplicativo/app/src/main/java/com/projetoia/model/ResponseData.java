@@ -6,5 +6,6 @@ public class ResponseData {
 
     public ArrayList<ResponseItem> items;
     public String image;
+    public String accuracy;
 
 }

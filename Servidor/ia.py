@@ -84,8 +84,10 @@ class IAProcessor:
       buffer.seek(0)
       image = buffer.getvalue()
 
+    accuracy = metrics.accuracy_score(testSetClass.to_numpy(), testPridictSetClass)
+
     items = []
     for testIndex in testSet.index:
       items.append({ 'id': str(testIndex), 'predict': str(testPridictSetClass[testIndex]), 'trueResult': str(testSetClass[testIndex]) })
 
-    return {'items': items, 'image': base64.b64encode(image).decode() }
+    return {'items': items, 'image': base64.b64encode(image).decode(), 'accuracy': str(accuracy)}
