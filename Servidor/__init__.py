@@ -25,7 +25,7 @@ def upload_file():
     # read the file and do something with it
     data = file.read()
     df = pd.read_csv(StringIO(str(data,'utf-8')))
-    responseData = processor.process(df, 5)
+    responseData = processor.process(df)
 
     # return success
     return json.dumps({'status': True, 'data': responseData}), 200

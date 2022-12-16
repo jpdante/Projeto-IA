@@ -9,6 +9,11 @@ import io
 
 class IAProcessor:
 
+  def __init__(self):
+    self.train_data = pd.read_csv("train_data.csv")
+    self.train_data.head()
+    self.k = 10
+
   def getEuclidianDistance(self, p, q):
     """
     Calcula a distancia euclidiana entre 2 elementos
@@ -22,27 +27,22 @@ class IAProcessor:
     """
     return np.linalg.norm(np.array(p) - np.array(q))
 
-  def process(self, df, k):
+  def process(self, df):
     """
     Realiza o processamento dos dados de teste
     
     Args:
         df: DataFrame dos dados de test
-        k: Quantidade de elementos proximos
         
     Returns:
         Object: resposta com items e plot
     """
-    trainDF, testDF = train_test_split(df, train_size=0.7)
-    trainDF = trainDF.reset_index(drop=True)
-    testDF = testDF.reset_index(drop=True)
+    trainData = self.train_data.drop('class', axis=1)
+    trainClass = self.train_data.loc[:, 'class']
+    testData = df.drop('class', axis=1)
+    testClass = df.loc[:, 'class']
 
-    trainData = trainDF.drop('class', axis=1)
-    trainClass = trainDF.loc[:, 'class']
-    testData = testDF.drop('class', axis=1)
-    testClass = testDF.loc[:, 'class']
-
-    return self.knn(trainData, trainClass, testData, testClass, k)
+    return self.knn(trainData, trainClass, testData, testClass, self.k)
 
   def knn(self, trainSet, trainSetClass, testSet, testSetClass, k):
     """
