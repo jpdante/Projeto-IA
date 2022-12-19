@@ -23,9 +23,15 @@ def upload_file():
         return json.dumps({'status': 'Error', 'message': 'No file selected'}), 400
     
     # read the file and do something with it
-    data = file.read()
-    df = pd.read_csv(StringIO(str(data,'utf-8')))
-    responseData = processor.process(df)
+    data = str(file.read(),'utf-8').split("---\r\n")
+
+    print(data)
+
+    trainDF = pd.read_csv(StringIO(data[0]))
+    testDF = pd.read_csv(StringIO(data[1]))
+    field = data[2].rstrip()
+    k = int(data[3].rstrip())
+    responseData = processor.process(trainDF, testDF, field, k)
 
     # return success
     return json.dumps({'status': True, 'data': responseData}), 200

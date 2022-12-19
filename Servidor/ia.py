@@ -9,11 +9,6 @@ import io
 
 class IAProcessor:
 
-  def __init__(self):
-    self.train_data = pd.read_csv("train_data.csv")
-    self.train_data.head()
-    self.k = 10
-
   def getEuclidianDistance(self, p, q):
     """
     Calcula a distancia euclidiana entre 2 elementos
@@ -27,7 +22,7 @@ class IAProcessor:
     """
     return np.linalg.norm(np.array(p) - np.array(q))
 
-  def process(self, df):
+  def process(self, trainDF, testDF, field, k):
     """
     Realiza o processamento dos dados de teste
     
@@ -37,12 +32,12 @@ class IAProcessor:
     Returns:
         Object: resposta com items e plot
     """
-    trainData = self.train_data.drop('class', axis=1)
-    trainClass = self.train_data.loc[:, 'class']
-    testData = df.drop('class', axis=1)
-    testClass = df.loc[:, 'class']
+    trainData = trainDF.drop(field, axis=1)
+    trainClass = trainDF.loc[:, field]
+    testData = testDF.drop(field, axis=1)
+    testClass = testDF.loc[:, field]
 
-    return self.knn(trainData, trainClass, testData, testClass, self.k)
+    return self.knn(trainData, trainClass, testData, testClass, k)
 
   def knn(self, trainSet, trainSetClass, testSet, testSetClass, k):
     """
@@ -88,6 +83,6 @@ class IAProcessor:
 
     items = []
     for testIndex in testSet.index:
-      items.append({ 'id': str(testIndex), 'predict': str(testPridictSetClass[testIndex]), 'trueResult': str(testSetClass[testIndex]) })
+      items.append({ 'id': str(testIndex), 'predict': str(testPridictSetClass[testIndex]), 'trueResult': '' })
 
     return {'items': items, 'image': base64.b64encode(image).decode(), 'accuracy': str(accuracy)}
